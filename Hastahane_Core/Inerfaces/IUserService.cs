@@ -8,7 +8,6 @@ namespace Hastahane_Core.Inerfaces
 {
     public class IUserService
     {
-        User Login(string email, string sifre);
-        void Register(User user);
+       
     }
 }

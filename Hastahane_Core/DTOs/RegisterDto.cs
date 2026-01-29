@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Hastahane_Core.DTOs
 {
-    internal class RegisterDto
+    public class RegisterDto
     {
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public UserRole Role { get; set; } = UserRole.User;
     }
 }
