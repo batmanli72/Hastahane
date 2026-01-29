@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hastahane_Domain.Enums
 {
-    internal class UserRole
+    public enum UserRole
     {
+        user = 0,
+        admin = 1
     }
 }
