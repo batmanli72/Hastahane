@@ -56,5 +56,4 @@ namespace Hastahane_Api.Controllers
             return Ok(new { message = "Appointment cancelled successfully" });
         }
     }
-
 }
