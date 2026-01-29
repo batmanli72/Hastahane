@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hastahane_Domain\Hastahane_Domain.csproj" />
+  </ItemGroup>
+
 </Project>
