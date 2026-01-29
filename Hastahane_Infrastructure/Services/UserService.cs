@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hastahane_Domain.Entities;
 using Hastahane_Infrastructure.Data;
 
 namespace Hastahane_Infrastructure.Services

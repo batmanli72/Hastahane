@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
+
 
 namespace Hastahane_Api.Controllers
 {
@@ -21,8 +17,15 @@ namespace Hastahane_Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var departments = await _departmentService.GetAllAsync();
-            return Ok(departments);
+            try
+            {
+                var departments = await _departmentService.GetAllAsync();
+                return Ok(departments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
@@ -52,5 +55,18 @@ namespace Hastahane_Api.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+    }
+
+    internal interface IDepartmentService
+    {
+        Task GetAllAsync();
+    }
+
+    internal class FromBodyAttribute : Attribute
+    {
+    }
+
+    public interface IActionResult
+    {
     }
 }

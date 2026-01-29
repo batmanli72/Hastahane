@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hastahane_Core.DTOs;
+﻿using Hastahane_Core.DTOs;
+using Hastahane_Domain.Entities;
 
-namespace Hastahane_Core.Inerfaces
+namespace Hastahane_Core.Interfaces
 {
-    public class IDepartmentService
+    public interface IDepartmentService
     {
         Task<IEnumerable<Department>> GetAllAsync();
         Task<Department> GetByIdAsync(int id);

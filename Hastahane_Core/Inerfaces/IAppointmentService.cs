@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hastahane_Core.DTOs;
+﻿using Hastahane_Core.DTOs;
+using Hastahane_Domain.Entities;
 
-namespace Hastahane_Core.Inerfaces
+namespace Hastahane_Core.Interfaces
 {
-    public class IAppointmentService
+    public interface IAppointmentService
     {
         Task<IEnumerable<Appointment>> GetAllAsync();
         Task<IEnumerable<Appointment>> GetByUserIdAsync(int userId);

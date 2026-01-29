@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
+using Hastahane_Core.DTOs;
+using Hastahane_Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hastahane_Api.Controllers
 {
@@ -21,8 +19,15 @@ namespace Hastahane_Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var doctors = await _doctorService.GetAllAsync();
-            return Ok(doctors);
+            try
+            {
+                var doctors = await _doctorService.GetAllAsync();
+                return Ok(doctors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
@@ -42,8 +47,15 @@ namespace Hastahane_Api.Controllers
         [HttpGet("department/{departmentId}")]
         public async Task<IActionResult> GetByDepartment(int departmentId)
         {
-            var doctors = await _doctorService.GetByDepartmentAsync(departmentId);
-            return Ok(doctors);
+            try
+            {
+                var doctors = await _doctorService.GetByDepartmentAsync(departmentId);
+                return Ok(doctors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpPost]

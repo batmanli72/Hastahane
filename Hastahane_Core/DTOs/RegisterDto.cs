@@ -11,6 +11,6 @@ namespace Hastahane_Core.DTOs
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public UserRole Role { get; set; } = UserRole.User;
+        public Hastahane_Domain.Enums.UserRole Role { get; set; } = Hastahane_Domain.Enums.UserRole.User;
     }
 }

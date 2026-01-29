@@ -1,4 +1,5 @@
 ﻿
+using Hastahane_Core.DTOs;
 using Hastahane_Domain.Entities;
 using Hastahane_Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Hastahane_Infrastructure.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService : Hastahane_Core.Inerfaces.IAuthService
     {
         private readonly AppDbContext _context;
 
@@ -22,13 +23,7 @@ namespace Hastahane_Infrastructure.Services
             if (existingUser != null)
                 throw new Exception("Email already exists");
 
-            var user = new User
-            {
-                FullName = registerDto.FullName,
-                Email = registerDto.Email,
-                PasswordHash = HashPassword(registerDto.Password),
-                Role = registerDto.Role
-            };
+            var user = new User { FullName = registerDto.FullName, Email = registerDto.Email, PasswordHash = HashPassword(registerDto.Password), Role = registerDto.Role };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

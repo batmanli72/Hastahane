@@ -20,5 +20,6 @@ namespace Hastahane_Domain.Entities
 
         // Navigation
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public string Sifre { get; set; }
     }
 }

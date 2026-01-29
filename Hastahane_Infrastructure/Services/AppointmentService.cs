@@ -1,6 +1,5 @@
-﻿using Hastahane_Core.DTOs;
-using Hastahane_Core.Interfaces;
-using Hastahane_Core.Rules;
+﻿
+using Hastahane_Core.DTOs;
 using Hastahane_Domain.Entities;
 using Hastahane_Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +20,8 @@ namespace Hastahane_Infrastructure.Services
             return await _context.Appointments
                 .Include(a => a.User)
                 .Include(a => a.Doctor)
-                .ThenInclude(d => d.Department)
+                    .ThenInclude(d => d.Department)
+                .AsNoTracking() // Sadece listeleme yapıldığı için performansı artırır
                 .ToListAsync();
         }
 
@@ -30,30 +30,34 @@ namespace Hastahane_Infrastructure.Services
             return await _context.Appointments
                 .Where(a => a.UserId == userId)
                 .Include(a => a.Doctor)
-                .ThenInclude(d => d.Department)
+                    .ThenInclude(d => d.Department)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<Appointment> CreateAsync(AppointmentCreateDto dto)
         {
-            if (!AppointmentRules.IsValidAppointmentDate(dto.AppointmentDate))
-                throw new Exception("Appointment date must be in the future");
+            // 1. KURAL KONTROLÜ: Tarih geçmişte mi?
+            // AppointmentRules statik bir sınıfsaydı doğrudan çağrılmalıydı.
+            if (!Hastahane_Core.Rules.AppointmentRules.IsValidAppointmentDate(dto.AppointmentDate))
+                throw new Exception("Randevu tarihi gelecekte bir zaman olmalıdır.");
 
-            var existingAppointments = await _context.Appointments
-                .Where(a => a.DoctorId == dto.DoctorId)
-                .ToListAsync();
+            // 2. PERFORMANS: Tüm listeyi çekmek yerine veritabanında kontrol etme
+            // AnyAsync kullanımı belleği yormaz.
+            var isConflict = await _context.Appointments
+                .AnyAsync(a => a.DoctorId == dto.DoctorId && a.AppointmentDate == dto.AppointmentDate);
 
-            if (!AppointmentRules.IsAppointmentAvailable(existingAppointments, dto.AppointmentDate, dto.DoctorId))
-                throw new Exception("This time slot is already booked for the selected doctor");
+            if (isConflict)
+                throw new Exception("Seçilen doktor için bu zaman dilimi zaten dolu.");
 
-            var user = await _context.Users.FindAsync(dto.UserId);
-            if (user == null)
-                throw new Exception("User not found");
+            // 3. VARLIK KONTROLLERİ
+            var userExists = await _context.Users.AnyAsync(u => u.Id == dto.UserId);
+            if (!userExists) throw new Exception("Kullanıcı bulunamadı.");
 
-            var doctor = await _context.Doctors.FindAsync(dto.DoctorId);
-            if (doctor == null)
-                throw new Exception("Doctor not found");
+            var doctorExists = await _context.Doctors.AnyAsync(d => d.Id == dto.DoctorId);
+            if (!doctorExists) throw new Exception("Doktor bulunamadı.");
 
+            // 4. ATAMA VE KAYIT
             var appointment = new Appointment
             {
                 UserId = dto.UserId,

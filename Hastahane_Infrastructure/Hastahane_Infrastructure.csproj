@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hastahane_Core\Hastahane_Core.csproj" />
     <ProjectReference Include="..\Hastahane_Domain\Hastahane_Domain.csproj" />
   </ItemGroup>
 

@@ -9,6 +9,7 @@ namespace Hastahane_Domain.Enums
     public enum UserRole
     {
         user = 0,
-        admin = 1
+        admin = 1,
+        User = 2
     }
 }

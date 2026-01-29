@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
+
 
 namespace Hastahane_Api.Controllers
 {
@@ -28,7 +24,7 @@ namespace Hastahane_Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                return new { error = ex.Message };
             }
         }
 
@@ -38,12 +34,17 @@ namespace Hastahane_Api.Controllers
             try
             {
                 var result = await _authService.LoginAsync(loginDto);
-                return Ok(new { message = result });
+                return (new { message = result });
             }
             catch (Exception ex)
             {
                 return Unauthorized(new { error = ex.Message });
             }
+        }
+
+        private IActionResult Unauthorized(object value)
+        {
+            throw new NotImplementedException();
         }
     }
 }
